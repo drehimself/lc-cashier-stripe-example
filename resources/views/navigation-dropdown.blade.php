@@ -15,9 +15,16 @@
                     <x-jet-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-jet-nav-link>
-                    <x-jet-nav-link href="{{ route('subscribe') }}" :active="request()->routeIs('subscribe')">
-                        Subscribe
+                    @if (!auth()->user()->subscribed('cashier'))
+                        <x-jet-nav-link href="{{ route('subscribe') }}" :active="request()->routeIs('subscribe')">
+                            Subscribe
+                        </x-jet-nav-link>
+                    @endif
+                    @if (auth()->user()->subscribed('cashier'))
+                    <x-jet-nav-link href="{{ route('members') }}" :active="request()->routeIs('members')">
+                        Members
                     </x-jet-nav-link>
+                    @endif
                 </div>
             </div>
 
