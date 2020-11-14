@@ -45,7 +45,23 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/charge', function () {
 
 Route::middleware(['auth:sanctum', 'verified'])->post('/charge', function (Request $request) {
     // dd($request->all());
-    auth()->user()->charge(1000, $request->paymentMethod);
+    // auth()->user()->charge(1000, $request->paymentMethod);
+    auth()->user()->createAsStripeCustomer();
+    auth()->user()->updateDefaultPaymentMethod($request->paymentMethod);
+    auth()->user()->invoiceFor('One Time Fee', 1500);
 
     return redirect('/dashboard');
 })->name('charge.post');
+
+Route::middleware(['auth:sanctum', 'verified'])->get('/invoices', function () {
+    return view('invoices', [
+        'invoices' => auth()->user()->invoices(),
+    ]);
+})->name('invoices');
+
+Route::get('user/invoice/{invoice}', function (Request $request, $invoiceId) {
+    return $request->user()->downloadInvoice($invoiceId, [
+        'vendor' => 'Your Company',
+        'product' => 'Your Product',
+    ]);
+});
