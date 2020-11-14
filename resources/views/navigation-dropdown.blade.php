@@ -25,6 +25,9 @@
                         Members
                     </x-jet-nav-link>
                     @endif
+                    <x-jet-nav-link href="{{ route('charge') }}" :active="request()->routeIs('charge')">
+                        Charge
+                    </x-jet-nav-link>
                 </div>
             </div>
 

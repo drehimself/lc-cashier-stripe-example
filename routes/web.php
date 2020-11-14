@@ -38,3 +38,14 @@ Route::middleware(['auth:sanctum', 'verified', 'nonPayingCustomer'])->post('/sub
 Route::middleware(['auth:sanctum', 'verified', 'payingCustomer'])->get('/members', function () {
     return view('members');
 })->name('members');
+
+Route::middleware(['auth:sanctum', 'verified'])->get('/charge', function () {
+    return view('charge');
+})->name('charge');
+
+Route::middleware(['auth:sanctum', 'verified'])->post('/charge', function (Request $request) {
+    // dd($request->all());
+    auth()->user()->charge(1000, $request->paymentMethod);
+
+    return redirect('/dashboard');
+})->name('charge.post');
