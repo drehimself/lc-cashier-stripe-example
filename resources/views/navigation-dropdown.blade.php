@@ -20,10 +20,15 @@
                             Subscribe
                         </x-jet-nav-link>
                     @endif
+                    @if (!auth()->user()->subscribed('cashier'))
+                        <x-jet-nav-link href="{{ route('subscribe2') }}" :active="request()->routeIs('subscribe2')">
+                            Subscribe2
+                        </x-jet-nav-link>
+                    @endif
                     @if (auth()->user()->subscribed('cashier'))
-                    <x-jet-nav-link href="{{ route('members') }}" :active="request()->routeIs('members')">
-                        Members
-                    </x-jet-nav-link>
+                        <x-jet-nav-link href="{{ route('members') }}" :active="request()->routeIs('members')">
+                            Members
+                        </x-jet-nav-link>
                     @endif
                     <x-jet-nav-link href="{{ route('charge') }}" :active="request()->routeIs('charge')">
                         Charge
@@ -109,7 +114,7 @@
                             @csrf
 
                             <x-jet-dropdown-link href="{{ route('logout') }}"
-                                                onclick="event.preventDefault();
+                                                 onclick="event.preventDefault();
                                                             this.closest('form').submit();">
                                 {{ __('Logout') }}
                             </x-jet-dropdown-link>
@@ -168,7 +173,7 @@
                     @csrf
 
                     <x-jet-responsive-nav-link href="{{ route('logout') }}"
-                                    onclick="event.preventDefault();
+                                               onclick="event.preventDefault();
                                                 this.closest('form').submit();">
                         {{ __('Logout') }}
                     </x-jet-responsive-nav-link>

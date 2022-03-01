@@ -29,12 +29,26 @@ Route::middleware(['auth:sanctum', 'verified', 'nonPayingCustomer'])->get('/subs
     ]);
 })->name('subscribe');
 
+Route::middleware(['auth:sanctum', 'verified', 'nonPayingCustomer'])->get('/subscribe2', function () {
+    return view('subscribe2', [
+        'intent' => auth()->user()->createSetupIntent(),
+    ]);
+})->name('subscribe2');
+
 Route::middleware(['auth:sanctum', 'verified', 'nonPayingCustomer'])->post('/subscribe', function (Request $request) {
     // dd($request->all());
     auth()->user()->newSubscription('cashier', $request->plan)->create($request->paymentMethod);
 
     return redirect('/dashboard');
 })->name('subscribe.post');
+
+Route::middleware(['auth:sanctum', 'verified', 'nonPayingCustomer'])->post('/subscribe2', function (Request $request) {
+    // dd($request->all());
+    auth()->user()->newSubscription('cashier', $request->plan)->create($request->paymentMethod);
+
+    return redirect('/dashboard');
+})->name('subscribe2.post');
+
 
 Route::middleware(['auth:sanctum', 'verified', 'payingCustomer'])->get('/members', function () {
     return view('members');
